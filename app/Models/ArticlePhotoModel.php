@@ -15,6 +15,7 @@ class ArticlePhotoModel extends Model
     protected $fillable = [
         'article_id',
         'filename',
+        'is_thumbnail',
         'path',
     ];
 

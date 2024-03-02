@@ -16,8 +16,11 @@ return new class extends Migration
             $table->string('title');
             $table->text('description');
             $table->bigInteger('price')->default(0);
+            $table->string('price_by')->nullable();
             $table->string('contact_name')->nullable();
             $table->string('whatsapp_number')->nullable();
+            $table->string('category');
+            $table->string('address')->nullable();
             $table->string('link_google_maps')->nullable();
             $table->string('article_seo')->nullable();
             $table->string('thumbnail_name')->nullable();

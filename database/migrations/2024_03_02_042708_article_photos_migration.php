@@ -20,6 +20,7 @@ return new class extends Migration
                 ->onDelete('cascade');
             $table->string('filename');
             $table->string('path');
+            $table->boolean('is_thumbnail')->default(false);
             $table->timestamps();
         });
     }

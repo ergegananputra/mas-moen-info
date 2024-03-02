@@ -16,15 +16,24 @@ class ArticleModel extends Model
         'title',
         'description',
         'price',
+        'price_by',
         'contact_name',
         'whatsapp_number',
         'article_seo',
+        'category',
+        'address',
         'link_google_maps',
         'thumbnail_name',
         'thumbnail_path',
     ];
 
-    public function photos() : HasMany {
-        return $this->HasMany(ArticlePhotoModel::class);
+    public function photos() : HasMany 
+    {
+        return $this->HasMany(ArticlePhotoModel::class, 'article_id');
+    }
+
+    public function getRouteKeyName()
+    {
+        return 'article_seo';
     }
 }

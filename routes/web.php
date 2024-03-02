@@ -17,12 +17,6 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::get('/', [ArticleController::class, 'index'])->name('article.index');
-Route::get('/artikel', [ArticleController::class, 'index'])->name('article.index');
-Route::get('/artikel/{id}/{article_seo}', [ArticleController::class, 'show'])->name('article.show');
-
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -32,7 +26,17 @@ Route::middleware('auth')->group(function () {
     Route::middleware('admin')->group(function () {
         Route::get('/artikel/create', [ArticleController::class, 'create'])->name('article.create');
         Route::post('/artikel', [ArticleController::class, 'store'])->name('article.store');
+        Route::get('/artikel/{article_seo}/edit', [ArticleController::class, 'edit'])->name('article.edit');
+        Route::post('/artikel/{article_seo}/edit/photos/{id}/delete', [ArticleController::class, 'deletePhoto'])->name('article.deletePhoto');
+        Route::post('/artikel/{article_seo}/update', [ArticleController::class, 'update'])->name('article.update');
+        Route::delete('/artikel/delete/{id}', [ArticleController::class, 'destroy'])->name('article.destroy');
     });
 });
+
+Route::get('/dashboard', [ArticleController::class, 'index'])->name('article.index');
+Route::get('/artikel', [ArticleController::class, 'index'])->name('article.index');
+Route::get('/artikel/search', [ArticleController::class, 'search'])->name('article.search');
+Route::get('/artikel/{article_seo}', [ArticleController::class, 'show'])->name('article.show');
+Route::get('/artikel/{category}', [ArticleController::class, 'indexByCategory'])->name('article.category');
 
 require __DIR__.'/auth.php';
