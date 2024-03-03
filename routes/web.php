@@ -33,10 +33,11 @@ Route::middleware('auth')->group(function () {
     });
 });
 
-Route::get('/dashboard', [ArticleController::class, 'index'])->name('article.index');
+
 Route::get('/artikel', [ArticleController::class, 'index'])->name('article.index');
 Route::get('/artikel/search', [ArticleController::class, 'search'])->name('article.search');
 Route::get('/artikel/{article_seo}', [ArticleController::class, 'show'])->name('article.show');
 Route::get('/artikel/{category}', [ArticleController::class, 'indexByCategory'])->name('article.category');
+Route::get('/dashboard', [ArticleController::class, 'index'])->name('article.index');
 
 require __DIR__.'/auth.php';

@@ -6,7 +6,7 @@
         <div class="col">
             <h1>{{$artikel->title}}</h1>
         </div>
-        @if (Auth::user()->role == "role_admin")
+        @if (Auth::user() != null && Auth::user()->role == "role_admin")
             <div class="col d-flex justify-content-end">
 
                 <a 
@@ -130,18 +130,24 @@
 
         <br>
         
-        @if($artikel->link_google_maps != null)
+        @if($artikel->address != null)
             <h2>Lokasi</h2>
-            <iframe 
-                src="{{$artikel->link_google_maps}}" 
-                width="max" 
-                height="450" 
-                style="border:0;" 
-                allowfullscreen="true" 
-                loading="lazy" 
-                referrerpolicy="no-referrer-when-downgrade">
 
-            </iframe>
+            <p>{{$artikel->address}}</p>
+
+            @if($artikel->link_google_maps != null)
+                <iframe 
+                    src="{{$artikel->link_google_maps}}" 
+                    width="max" 
+                    height="450" 
+                    style="border:0;" 
+                    allowfullscreen="true" 
+                    loading="lazy" 
+                    referrerpolicy="no-referrer-when-downgrade">
+
+                </iframe>
+            @endif
+        
         @endif
         
 

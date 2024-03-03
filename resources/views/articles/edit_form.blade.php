@@ -95,7 +95,7 @@
                 <label for="address" class="col-md-4 col-form-label text-md-right">Alamat</label>
                 <div class="col-md-8">
                     <textarea id="address" class="form-control" 
-                        name="address" required 
+                        name="address" 
                         autocomplete="address" autofocus
                         >{{$artikel->address}}</textarea>
                 </div>
@@ -241,7 +241,7 @@
 
             <br>
             <div class="row justify-content-center">
-                <a href="/buku" class="col-sm-2  btn btn-danger">Batal</a>
+                <a href="/artikel" class="col-sm-2  btn btn-danger">Batal</a>
                 <div class="col-sm-1"></div>
                 <button type="submit" class="col-sm-2  btn btn-success">Simpan</button>
             </div>
