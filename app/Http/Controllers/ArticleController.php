@@ -91,13 +91,18 @@ class ArticleController extends Controller
         $article->thumbnail_path = $filepath;
 
         $embed_gmaps_link = $request->embed_gmaps_link;
-        if ($embed_gmaps_link.startsWith('https://www.google.com/maps/embed')) {
-            $article->embed_gmaps_link = $embed_gmaps_link;
-        } else if ($embed_gmaps_link.startsWith('<iframe')) {
-            $url = explode('"', $embed_gmaps_link)[1];
-            $article->embed_gmaps_link = $url;
+        if ($embed_gmaps_link) {
+            if (Str::startsWith($embed_gmaps_link, 'https://www.google.com/maps/embed')) {
+                $article->embed_gmaps_link = $embed_gmaps_link;
+            } else if (Str::startsWith($embed_gmaps_link, '<iframe')) {
+                $url = explode('"', $embed_gmaps_link)[1];
+                $article->embed_gmaps_link = $url;
+            }
         }
 
+        $article->save();
+
+        $article->article_seo = Str::slug($request->title) . '-' . $article->created_at->format('YmdHis');
         $article->save();
 
         ArticlePhotoModel::create([
@@ -164,15 +169,18 @@ class ArticleController extends Controller
         $article->address = $request->address;
         $article->category = $request->category;
         $article->link_google_maps = $request->link_google_maps;
-        $article->article_seo = Str::slug($request->title) . '-' . time();
+        $article->article_seo = Str::slug($request->title) . '-' . $article->created_at->format('YmdHis');
 
         $embed_gmaps_link = $request->embed_gmaps_link;
-        if ($embed_gmaps_link.startsWith('https://www.google.com/maps/embed')) {
-            $article->embed_gmaps_link = $embed_gmaps_link;
-        } else if ($embed_gmaps_link.startsWith('<iframe')) {
-            $url = explode('"', $embed_gmaps_link)[1];
-            $article->embed_gmaps_link = $url;
+        if ($embed_gmaps_link) {
+            if (Str::startsWith($embed_gmaps_link, 'https://www.google.com/maps/embed')) {
+                $article->embed_gmaps_link = $embed_gmaps_link;
+            } else if (Str::startsWith($embed_gmaps_link, '<iframe')) {
+                $url = explode('"', $embed_gmaps_link)[1];
+                $article->embed_gmaps_link = $url;
+            }
         }
+        
 
         $article->save();
 
