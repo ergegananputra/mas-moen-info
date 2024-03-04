@@ -99,7 +99,7 @@
                 <div class="card flex-grow-1 px-4 py-8 my-4">
                     <div class="card-body">
                         <h2>Kontak Info</h2>
-                        <p>{{$artikel->contact_name}}</p>
+                        <p><small>Klik icon WhatsApp untuk menghubungi</small> <strong>{{$artikel->contact_name}}</strong></p>
                         <a aria-label="Chat on WhatsApp" target="_blank" href="https://wa.me/{{$artikel->whatsapp_number}}"> 
                             <img 
                                 alt="Chat on WhatsApp" 
@@ -135,9 +135,16 @@
 
             <p>{{$artikel->address}}</p>
 
-            @if($artikel->link_google_maps != null)
+            @if($artikel->link_google_maps)
+                <a href="{{$artikel->link_google_maps}}" 
+                    class="btn btn-primary"
+                    target="_blank">Buka di Google Maps</a>
+                    <br>
+            @endif
+
+            @if($artikel->embed_gmaps_link != null)
                 <iframe 
-                    src="{{$artikel->link_google_maps}}" 
+                    src="{{$artikel->embed_gmaps_link}}" 
                     width="max" 
                     height="450" 
                     style="border:0;" 

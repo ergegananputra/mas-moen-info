@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('category');
             $table->string('address')->nullable();
             $table->string('link_google_maps')->nullable();
+            $table->string('embed_gmaps_link')->nullable();
             $table->string('article_seo')->nullable();
             $table->string('thumbnail_name')->nullable();
             $table->string('thumbnail_path')->nullable();

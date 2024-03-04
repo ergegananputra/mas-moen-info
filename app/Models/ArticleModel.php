@@ -23,6 +23,7 @@ class ArticleModel extends Model
         'category',
         'address',
         'link_google_maps',
+        'embed_gmaps_link',
         'thumbnail_name',
         'thumbnail_path',
     ];

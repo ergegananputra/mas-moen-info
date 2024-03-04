@@ -110,8 +110,22 @@
                         name="link_google_maps" 
                         autocomplete="link_google_maps" 
                         autofocus
+                        placeholder="Contoh: https://maps.google.com/abcdef"
                         value="{{$artikel->link_google_maps}}"
                         >
+                </div>
+            </div>
+
+            <div class="form-group row  mb-4">
+                <label for="embed_gmaps_link" class="col-md-4 col-form-label text-md-right">Embed URL Google Maps</label>
+                <div class="col-md-8">
+                    <input id="embed_gmaps_link" 
+                        type="text" class="form-control" 
+                        name="embed_gmaps_link" 
+                        autocomplete="embed_gmaps_link" 
+                        autofocus
+                        value="{{$artikel->embed_gmaps_link}}"
+                        placeholder="Embed Link">
                 </div>
             </div>
 
