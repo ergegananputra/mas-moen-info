@@ -43,12 +43,12 @@
                         </div>
                         <div class="col-md-8">
                             <h4 class="card-title">{{$artikel->title}}</h4>
-                            <p class="card-text">{{Str::limit($artikel->description, 250)}}</p>
+                            <p class="card-text">{!! Str::limit($artikel->short_description, 250) !!}</p>
 
                             <span 
                                 class="badge bg-secondary my-2"
                                 style="font-size: 1em; padding: 10px;"
-                                > {{$artikel->category}} </span>
+                                > {{$artikel->category->name}} </span>
                         </div>
                     </div>
                 </div>

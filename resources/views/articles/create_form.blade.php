@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@push('head')
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote-bs4.min.css" rel="stylesheet">
+@endpush
+
 @section('content')
     <div class="d-flex flex-column align-items-center">
         <br>
@@ -55,8 +59,9 @@
                 <label for="category" class="col-md-4 col-form-label text-md-right">Kategori</label>
                 <div class="col-md-8">
                     <select id="category" class="form-select" name="category" required>
-                        <option value="Properti">Properti</option>
-                        <option value="Lainnya">Lainnya</option>
+                        @foreach ($categories as $category)
+                            <option value="{{$category->id}}">{{$category->name}}</option>
+                        @endforeach
                     </select>
                 </div>
             </div>
@@ -105,7 +110,8 @@
             <div class="form-group row  mb-4">
                 <label for="whatsapp_number" class="col-md-4 col-form-label text-md-right">Nomor Whatsapp</label>
                 <div class="col-md-8">
-                    <input id="whatsapp_number" type="text" class="form-control" name="whatsapp_number" required autocomplete="contact_number" autofocus>
+                    <input id="whatsapp_number" type="text" class="form-control" name="whatsapp_number" required autocomplete="contact_number" autofocus
+                    placeholder="contoh: 628123456 (Gunakan 62 langsung, tanpa 0)">
                 </div>
             </div>
 
@@ -181,4 +187,44 @@
 
         </form>
     </div>
+
+    
+    @push('scripts')
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote-bs4.min.js"></script>
+
+        <script>
+            $(document).ready(function() {
+                $('#description').summernote({
+                    height: 300,
+                    minHeight: null,
+                    maxHeight: null,
+                    focus: true,
+                    callbacks: {
+                        onImageUpload: function(files) {
+                            var $editor = $(this);
+                            var data = new FormData();
+                            data.append('file', files[0]);
+                            $.ajax({
+                                url: '{{ route('summernote.upload') }}',
+                                method: 'POST',
+                                data: data,
+                                processData: false,
+                                contentType: false,
+                                headers: {
+                                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                                },
+                                success: function(response) {
+                                    $editor.summernote('insertImage', response.url);
+                                },
+                                error: function() {
+                                    console.error('Image upload failed');
+                                }
+                            });
+                        }
+                    }
+                });
+            });
+        </script>
+        
+    @endpush
 @endsection

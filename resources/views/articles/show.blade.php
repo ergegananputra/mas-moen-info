@@ -6,7 +6,7 @@
         <div class="col">
             <h1>{{$artikel->title}}</h1>
         </div>
-        @if (Auth::user() != null && Auth::user()->role == "role_admin")
+        @if (Auth::user() != null && Auth::user()->role == "role_admin" && $artikel->author_id == Auth::user()->id)
             <div class="col d-flex justify-content-end">
 
                 <a 
@@ -39,7 +39,7 @@
     <span 
         class="badge bg-secondary my-2"
         style="font-size: 1em; padding: 10px;"
-        > {{$artikel->category}} </span>
+        > {{$artikel->category->name}} </span>
     
     <div id="carouselPreview" class="carousel slide">
         <div class="carousel-indicators">
@@ -90,7 +90,7 @@
 
         <h2>Deskripsi</h2>
 
-        <p>{!! nl2br(e($artikel->description)) !!}</p>
+        <p>{!! $artikel->description !!}</p>
 
 
         <div class="row d-flex">

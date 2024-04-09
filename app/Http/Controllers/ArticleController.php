@@ -3,11 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\ArticlePhotoModel;
+use App\Models\CategoriesModel;
 use Brick\Math\BigInteger;
 use Illuminate\Http\Request;
 use Intervention\Image\Facades\Image;
 use App\Models\ArticleModel;
 use Illuminate\Support\Str;
+use HTMLPurifier;
+use HTMLPurifier_Config;
 
 class ArticleController extends Controller
 {
@@ -50,7 +53,8 @@ class ArticleController extends Controller
      */
     public function create()
     {
-        return view('articles.create_form');
+        $categories = CategoriesModel::all();
+        return view('articles.create_form', compact('categories'));
     }
 
     /**
@@ -74,21 +78,30 @@ class ArticleController extends Controller
         Image::make(storage_path().'/app/public/uploads/'.$filename)
             ->save();
 
+
+            
+        $config = HTMLPurifier_Config::createDefault();
+        $config->set('HTML.Allowed', 'b,strong,i,em,u,a[href|title],ul,ol,li,p[style],br,span[style],img[width|height|alt|src]');
+        $purifier = new HTMLPurifier($config);
         
+        $clean_html = $purifier->purify($request->description);
+    
 
         $article = new ArticleModel();
         $article->title = $request->title;
-        $article->description = $request->description;
+        $article->description = $clean_html;
         $article->price = $request->price;
         $article->price_by = $request->price_by;
         $article->contact_name = $request->contact_name;
         $article->whatsapp_number = $request->whatsapp_number;
         $article->address = $request->address;
-        $article->category = $request->category;
         $article->link_google_maps = $request->link_google_maps;
-        $article->article_seo = Str::slug($request->title) . '-' . time();
         $article->thumbnail_name = $filename;
         $article->thumbnail_path = $filepath;
+        $article->category_id = $request->category;
+        $article->author_id = auth()->user()->id;
+
+        $article->short_description = Str::limit($clean_html, 100);
 
         $embed_gmaps_link = $request->embed_gmaps_link;
         if ($embed_gmaps_link) {
@@ -141,9 +154,10 @@ class ArticleController extends Controller
      */
     public function edit(string $article_seo)
     {
+        $categories = CategoriesModel::all();
         $artikel = ArticleModel::where('article_seo', $article_seo)->first();
         $thumbnail = $artikel->photos()->where('is_thumbnail', true)->first();
-        return view('articles.edit_form', compact('artikel', 'thumbnail'));
+        return view('articles.edit_form', compact('artikel', 'thumbnail', 'categories'));
     }
 
     /**
@@ -159,17 +173,25 @@ class ArticleController extends Controller
             'whatsapp_number' => 'required',
         ]);
 
+        $config = HTMLPurifier_Config::createDefault();
+        $config->set('HTML.Allowed', 'b,strong,i,em,u,a[href|title],ul,ol,li,p[style],br,span[style],img[width|height|alt|src]');
+        $purifier = new HTMLPurifier($config);
+        
+        $clean_html = $purifier->purify($request->description);
+
         $article = ArticleModel::where('article_seo', $article_seo)->first();
         $article->title = $request->title;
-        $article->description = $request->description;
+        $article->description = $clean_html;
         $article->price = $request->price;
         $article->price_by = $request->price_by;
         $article->contact_name = $request->contact_name;
         $article->whatsapp_number = $request->whatsapp_number;
         $article->address = $request->address;
-        $article->category = $request->category;
         $article->link_google_maps = $request->link_google_maps;
+        $article->category_id = $request->category;
         $article->article_seo = Str::slug($request->title) . '-' . $article->created_at->format('YmdHis');
+
+        $article->short_description = Str::limit($clean_html, 100);
 
         $embed_gmaps_link = $request->embed_gmaps_link;
         if ($embed_gmaps_link) {

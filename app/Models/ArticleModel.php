@@ -15,12 +15,14 @@ class ArticleModel extends Model
     protected $fillable = [
         'title',
         'description',
+        'short_description',
         'price',
         'price_by',
         'contact_name',
         'whatsapp_number',
         'article_seo',
-        'category',
+        'category_id',
+        'author_id',
         'address',
         'link_google_maps',
         'embed_gmaps_link',
@@ -31,6 +33,11 @@ class ArticleModel extends Model
     public function photos() : HasMany 
     {
         return $this->HasMany(ArticlePhotoModel::class, 'article_id');
+    }
+
+    public function category() 
+    {
+        return $this->belongsTo(CategoriesModel::class, 'category_id', 'id');
     }
 
     public function getRouteKeyName()
